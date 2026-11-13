@@ -166,13 +166,13 @@ pre { margin: 0; font: 8.5pt/1.58 var(--mono); white-space: pre-wrap; tab-size: 
 pre.src { background: var(--code-bg); color: #e8e3d6; padding: 3.8mm 5mm; }
 pre.out {
   background: var(--paper); color: #2b2e35;
-  padding: 2.6mm 5mm 3.2mm; border-left: 0.9mm solid var(--amber);
+  padding: 2.6mm 5mm 3.2mm; border: 0.25mm solid var(--hair); border-top: 0; border-radius: 0 0 1.8mm 1.8mm;
 }
 pre.out::before {
   content: "OUTPUT"; display: block; margin-bottom: 1.2mm;
   font: 700 6pt var(--sans); letter-spacing: 0.2em; color: var(--amber-deep);
 }
-pre.out.err { border-left-color: var(--red); color: #8c1d18; background: #fbf0ec; }
+pre.out.err { border-color: #efc9c4; color: #8c1d18; background: #fbf0ec; }
 pre.out.err::before { content: "ERROR"; color: var(--red); }
 pre.out + pre.out.err { border-top: 0.2mm solid #f0d9d2; }
 .comment { color: #8d95a4; font-style: italic; }
@@ -201,14 +201,14 @@ td.wrap { white-space: normal; }
 /* ---------- callouts ---------- */
 aside {
   margin: 4mm 0 5.2mm; padding: 3.4mm 5mm 3.4mm 5mm; break-inside: avoid;
-  background: #fdf8ea; border-left: 0.9mm solid var(--amber); border-radius: 0 1.6mm 1.6mm 0;
+  background: #fdf8ea; border: 0.25mm solid #f0dcae; border-radius: 1.6mm;
   font: 9.2pt/1.52 var(--sans); color: #33363d;
 }
 aside b:first-child {
   display: block; margin-bottom: 0.8mm;
   font-size: 6.4pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber-deep);
 }
-aside.warn { background: #fbf0ec; border-left-color: var(--red); }
+aside.warn { background: #fbf0ec; border-color: #efc9c4; }
 aside.warn b:first-child { color: var(--red); }
 
 /* ---------- diagrams ---------- */
