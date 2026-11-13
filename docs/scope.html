@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Variables and Scope | Lumen docs</title>
+<meta name="description" content="Names are introduced with let, changed with =, and visible only inside the block that declares them.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1a2b'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23f0a020'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="sidebar">
+  <a class="brand" href="index.html">lumen <span>docs</span></a>
+  <nav aria-label="Chapters">
+    <a href="index.html">Overview</a>
+    <a href="start.html"><span>1</span>Getting Started</a>
+    <a href="values.html"><span>2</span>Values and Types</a>
+    <a href="scope.html" aria-current="page"><span>3</span>Variables and Scope</a>
+    <a href="operators.html"><span>4</span>Operators</a>
+    <a href="flow.html"><span>5</span>Control Flow</a>
+    <a href="functions.html"><span>6</span>Functions</a>
+    <a href="closures.html"><span>7</span>Closures</a>
+    <a href="builtins.html"><span>8</span>Built-in Functions</a>
+    <a href="errors.html"><span>9</span>Errors</a>
+    <a href="layout.html"><span>10</span>Lines and Layout</a>
+    <a href="recipes.html"><span>11</span>Recipes</a>
+    <a href="embedding.html"><span>12</span>Embedding in Rust</a>
+    <a href="grammar.html"><span>A</span>Grammar</a>
+    <a href="reference.html"><span>B</span>Quick Reference</a>
+    <a href="limits.html"><span>C</span>Limits and Known Gaps</a>
+  </nav>
+  <div class="elsewhere">
+    <a href="https://lumen-lang.vercel.app">Website</a>
+    <a href="https://github.com/ertodebana/lumen">GitHub</a>
+    <a href="Lumen-Handbook.pdf">Handbook (PDF)</a>
+  </div>
+</div>
+<main id="main">
+<header class="chapter" id="scope"><p class="kicker">Chapter 3</p><h1>Variables and Scope</h1><div class="rule"></div><p class="lead">Names are introduced with
+<code>let</code>, changed with <code>=</code>, and visible only inside the block that
+declares them.</p></header>
+
+<h2>Declaring and assigning</h2>
+<figure class="code"><pre class="src"><span class="kw">let</span> name = <span class="string">"Ada"</span>
+<span class="kw">let</span> age              <span class="comment"># no initial value: starts as nil</span>
+<span class="kw">print</span> age
+age = <span class="number">36</span>
+<span class="kw">print</span> name + <span class="string">" is "</span> + age</pre><pre class="out">nil
+Ada is 36</pre></figure>
+<p>A name is letters, digits and underscores, and cannot start with a digit. The thirteen
+keywords listed in Appendix B cannot be used as names.</p>
+<p><code>let</code> creates a variable. <code>=</code> changes one that already exists.
+Assigning to a name that was never declared is an error, which catches typos that would
+otherwise silently create a new variable.</p>
+<figure class="code"><pre class="src"><span class="kw">let</span> count = <span class="number">1</span>
+cuont = <span class="number">2</span></pre><pre class="out err">[line 2] RuntimeError: cannot assign to undefined variable 'cuont'</pre></figure>
+<p>Assignment is an expression: it produces the assigned value, and chains from right to
+left.</p>
+<figure class="code"><pre class="src"><span class="kw">let</span> a = <span class="number">0</span>
+<span class="kw">let</span> b = <span class="number">0</span>
+a = b = <span class="number">7</span>
+<span class="kw">print</span> a + b</pre><pre class="out">14</pre></figure>
+
+<h2>Blocks</h2>
+<p>A pair of braces is a block, and every block is a new scope. Variables declared inside
+disappear when the block ends. A block can stand on its own, and it is also what follows
+<code>if</code>, <code>while</code> and <code>fn</code>.</p>
+<figure class="code"><pre class="src">{
+    <span class="kw">let</span> secret = <span class="number">42</span>
+    <span class="kw">print</span> secret
+}
+<span class="kw">print</span> secret</pre><pre class="out">42</pre><pre class="out err">[line 5] RuntimeError: undefined variable 'secret'</pre></figure>
+
+<h3>Shadowing</h3>
+<p>An inner block may declare a variable with the same name as an outer one. The inner
+name hides the outer one until the block ends; the outer variable is untouched.</p>
+<figure class="code"><pre class="src"><span class="kw">let</span> x = <span class="string">"outer"</span>
+{
+    <span class="kw">let</span> x = <span class="string">"inner"</span>
+    <span class="kw">print</span> x
+}
+<span class="kw">print</span> x</pre><pre class="out">inner
+outer</pre></figure>
+
+<h3>Reaching outward</h3>
+<p>Without <code>let</code>, an assignment finds the nearest enclosing variable of that name
+and changes it.</p>
+<figure class="code"><pre class="src"><span class="kw">let</span> total = <span class="number">0</span>
+{
+    total = total + <span class="number">10</span>    <span class="comment"># no `let`: this is the outer total</span>
+}
+<span class="kw">print</span> total</pre><pre class="out">10</pre></figure>
+<aside class="warn"><b>Careful</b>The difference between <code>let total = ...</code> and
+<code>total = ...</code> inside a block is the difference between a new variable and
+changing the old one. Inside a loop body, a stray <code>let</code> gives you a fresh
+variable on every pass.</aside>
+
+<h2>Scope follows the text</h2>
+<p>Lumen is lexically scoped. A function sees the variables that were visible where it was
+<em>written</em>, not the ones visible where it is <em>called</em>.</p>
+<figure class="code"><pre class="src"><span class="kw">let</span> x = <span class="string">"global"</span>
+
+<span class="kw">fn</span> <span class="call">show</span>() {
+    <span class="kw">return</span> x
+}
+
+<span class="kw">fn</span> <span class="call">test</span>() {
+    <span class="kw">let</span> x = <span class="string">"local"</span>     <span class="comment"># show() does not see this one</span>
+    <span class="kw">return</span> <span class="call">show</span>()
+}
+
+<span class="kw">print</span> <span class="call">test</span>()</pre><pre class="out">global</pre></figure>
+<p>This one rule is what makes closures, the subject of chapter 7, work.</p>
+
+
+
+<nav class="pager" aria-label="Pages"><a class="prev" href="values.html"><small>Previous</small>Values and Types</a><a class="next" href="operators.html"><small>Next</small>Operators</a></nav>
+<footer>Lumen 0.2.0. Every example on this site was run by the <code>lumen</code> executable when the page was built.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,1577 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Lumen Handbook</title>
+<style>
+:root {
+  --ink: #17191e;
+  --soft: #4a4f59;
+  --muted: #666b74;
+  --hair: #e4dfd2;
+  --paper: #f8f4e9;
+  --amber: #e8960c;
+  --amber-deep: #a86400;
+  --glow: #ffb224;
+  --night: #0c0e13;
+  --code-bg: #12151c;
+  --red: #b3261e;
+  --serif: "P052", "Noto Serif", serif;
+  --sans: "Adwaita Sans", "Inter", "Noto Sans", sans-serif;
+  --mono: "JetBrains Mono", "Adwaita Mono", monospace;
+}
+
+@page {
+  size: A4;
+  margin: 22mm 22mm 25mm 22mm;
+  @bottom-left {
+    content: "THE LUMEN HANDBOOK";
+    font: 600 6.6pt "Adwaita Sans", sans-serif;
+    letter-spacing: 0.16em;
+    color: #6f747d;
+  }
+  @bottom-right {
+    content: counter(page);
+    font: 600 8.5pt "Adwaita Sans", sans-serif;
+    color: #17191e;
+  }
+}
+@page cover {
+  margin: 0;
+  @bottom-left { content: none; }
+  @bottom-right { content: none; }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0;
+  font: 10.5pt/1.6 var(--serif);
+  color: var(--ink);
+  font-kerning: normal;
+  hyphens: manual;
+}
+p { margin: 0 0 3.2mm; orphans: 3; widows: 3; }
+p:has(+ figure), p:has(+ table), p:has(+ ul) { break-after: avoid; }
+a { color: inherit; text-decoration: none; }
+strong { font-weight: 700; }
+em { font-style: italic; }
+
+/* ---------- cover ---------- */
+.cover {
+  page: cover;
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  background: var(--night);
+  color: #f4efe3;
+  font-family: var(--sans);
+}
+.cover .glow {
+  position: absolute;
+  left: 78mm; top: -4mm;
+  width: 190mm; height: 190mm;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 196, 92, 1) 0%,
+    rgba(255, 170, 40, 0.92) 7%,
+    rgba(240, 140, 14, 0.5) 20%,
+    rgba(214, 112, 0, 0.2) 40%,
+    rgba(180, 90, 0, 0.06) 58%,
+    rgba(12, 14, 19, 0) 72%);
+}
+.cover svg.rings { position: absolute; left: 0; top: 0; width: 210mm; height: 297mm; }
+.cover .top {
+  position: absolute; left: 22mm; right: 22mm; top: 22mm;
+  display: flex; justify-content: space-between;
+  font-size: 7.2pt; font-weight: 600; letter-spacing: 0.22em; color: rgba(244, 239, 227, 0.72);
+}
+.cover .title { position: absolute; left: 22mm; right: 22mm; bottom: 62mm; }
+.cover .wordmark {
+  font-size: 104pt; font-weight: 300; letter-spacing: -0.045em; line-height: 0.9;
+  margin-left: -1.5mm;
+}
+.cover .sub {
+  margin-top: 7mm;
+  font-size: 21pt; font-weight: 600; letter-spacing: -0.01em; color: var(--glow);
+}
+.cover .blurb {
+  margin: 6mm 0 0; max-width: 104mm;
+  font: 11.5pt/1.55 var(--serif); color: rgba(244, 239, 227, 0.78);
+}
+.cover .foot {
+  position: absolute; left: 22mm; right: 22mm; bottom: 22mm;
+  padding-top: 4.5mm; border-top: 0.3mm solid rgba(244, 239, 227, 0.22);
+  display: flex; justify-content: space-between;
+  font-size: 7.2pt; font-weight: 600; letter-spacing: 0.22em; color: rgba(244, 239, 227, 0.72);
+}
+
+/* ---------- contents ---------- */
+.contents { break-before: page; padding-top: 14mm; }
+.contents h1 {
+  font: 700 30pt/1.1 var(--sans); letter-spacing: -0.025em; margin: 0 0 4mm;
+}
+.contents .intro { font-size: 11.5pt; color: var(--soft); max-width: 125mm; margin-bottom: 11mm; }
+.toc-row {
+  display: flex; align-items: baseline; gap: 4mm;
+  padding: 2.55mm 0; border-bottom: 0.2mm solid var(--hair);
+  font-family: var(--sans);
+}
+.toc-row:first-of-type { border-top: 0.2mm solid var(--hair); }
+.toc-n { width: 9mm; font-size: 8pt; font-weight: 700; color: var(--amber-deep); letter-spacing: 0.06em; }
+.toc-t { font-size: 11pt; font-weight: 600; }
+.toc-dots { flex: 1; }
+.toc-p { font-size: 9.5pt; font-weight: 600; color: var(--soft); font-variant-numeric: tabular-nums; }
+.toc-row.appendix .toc-t { font-weight: 500; color: var(--soft); }
+.toc-row.appendix .toc-n { color: var(--muted); }
+
+/* ---------- chapters ---------- */
+header.chapter { break-before: page; padding-top: 12mm; margin-bottom: 9mm; }
+.eyebrow {
+  font: 700 7.4pt var(--sans); letter-spacing: 0.24em; color: var(--amber-deep);
+}
+header.chapter h1 {
+  font: 700 31pt/1.08 var(--sans); letter-spacing: -0.028em; margin: 3.5mm 0 0;
+}
+header.chapter .rule { width: 16mm; height: 0.9mm; background: var(--amber); margin: 6mm 0 5.5mm; }
+header.chapter .lead {
+  font-size: 13pt; line-height: 1.5; font-style: italic; color: var(--soft); max-width: 138mm; margin: 0;
+}
+
+h2 {
+  font: 700 14pt/1.25 var(--sans); letter-spacing: -0.012em;
+  margin: 9mm 0 2.8mm; break-after: avoid;
+}
+h3 {
+  font: 700 10.4pt/1.3 var(--sans); margin: 6mm 0 2mm; break-after: avoid;
+}
+h2 + h3 { margin-top: 3mm; }
+
+code {
+  font: 0.84em var(--mono);
+  background: #f1ecdf; border-radius: 0.8mm; padding: 0.25mm 1.1mm;
+  white-space: nowrap;
+}
+ul { margin: 0 0 3.2mm; padding-left: 5.5mm; }
+li { margin-bottom: 1.3mm; padding-left: 1mm; }
+li::marker { color: var(--amber-deep); }
+
+/* ---------- code ---------- */
+figure.code {
+  margin: 3.6mm 0 5.2mm; break-inside: avoid;
+  border-radius: 1.8mm; overflow: hidden;
+}
+pre { margin: 0; font: 8.5pt/1.58 var(--mono); white-space: pre-wrap; tab-size: 4; }
+pre.src { background: var(--code-bg); color: #e8e3d6; padding: 3.8mm 5mm; }
+pre.out {
+  background: var(--paper); color: #2b2e35;
+  padding: 2.6mm 5mm 3.2mm; border-left: 0.9mm solid var(--amber);
+}
+pre.out::before {
+  content: "OUTPUT"; display: block; margin-bottom: 1.2mm;
+  font: 700 6pt var(--sans); letter-spacing: 0.2em; color: var(--amber-deep);
+}
+pre.out.err { border-left-color: var(--red); color: #8c1d18; background: #fbf0ec; }
+pre.out.err::before { content: "ERROR"; color: var(--red); }
+pre.out + pre.out.err { border-top: 0.2mm solid #f0d9d2; }
+.comment { color: #8d95a4; font-style: italic; }
+.string { color: #a8d59b; }
+.number { color: #86c5f7; }
+.kw { color: #ffb454; font-weight: 500; }
+.const { color: #f59a7a; }
+.call { color: #c9b8f5; }
+pre.shell { color: #b4bac5; }
+pre.shell .prompt { color: var(--glow); }
+pre.shell .cmd { color: #f1ecdf; }
+
+/* ---------- tables ---------- */
+table { width: 100%; border-collapse: collapse; margin: 3.6mm 0 5.5mm; font: 8.9pt/1.45 var(--sans); }
+tr { break-inside: avoid; }
+thead, tr:first-child { break-after: avoid; }
+th {
+  text-align: left; font-size: 6.6pt; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); padding: 0 3mm 2mm 0; border-bottom: 0.35mm solid var(--ink);
+}
+td { padding: 2.1mm 3mm 2.1mm 0; border-bottom: 0.2mm solid var(--hair); vertical-align: top; }
+td code, th code { font-size: 0.92em; }
+td:first-child { white-space: nowrap; }
+td.wrap { white-space: normal; }
+
+/* ---------- callouts ---------- */
+aside {
+  margin: 4mm 0 5.2mm; padding: 3.4mm 5mm 3.4mm 5mm; break-inside: avoid;
+  background: #fdf8ea; border-left: 0.9mm solid var(--amber); border-radius: 0 1.6mm 1.6mm 0;
+  font: 9.2pt/1.52 var(--sans); color: #33363d;
+}
+aside b:first-child {
+  display: block; margin-bottom: 0.8mm;
+  font-size: 6.4pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber-deep);
+}
+aside.warn { background: #fbf0ec; border-left-color: var(--red); }
+aside.warn b:first-child { color: var(--red); }
+
+/* ---------- diagrams ---------- */
+figure.diagram { margin: 5mm 0 6mm; break-inside: avoid; }
+figure.diagram svg { display: block; width: 100%; height: auto; }
+figure.diagram figcaption, .caption {
+  font: 8pt/1.4 var(--sans); color: var(--muted); margin-top: 2.2mm;
+}
+
+/* ---------- quick reference ---------- */
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 4.5mm; margin: 2mm 0.4mm 0 0; }
+.card { min-width: 0; border: 0.25mm solid var(--hair); border-radius: 1.8mm; padding: 4mm 4.5mm 3.2mm; break-inside: avoid; }
+.card h3 { margin: 0 0 2.2mm; font-size: 6.8pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber-deep); }
+.card p, .card li { font: 8.8pt/1.5 var(--sans); margin-bottom: 1.2mm; }
+.card pre { font-size: 8pt; color: var(--ink); line-height: 1.6; }
+.card.wide { grid-column: 1 / -1; }
+.kw-list code { margin: 0 0.6mm 1.2mm 0; display: inline-block; }
+
+.colophon {
+  margin-top: 10mm; padding-top: 4mm; border-top: 0.2mm solid var(--hair);
+  font: 8.2pt/1.55 var(--sans); color: var(--muted);
+}
+
+/* no programming ligatures: == must print as two characters */
+code, pre, pre *, svg text { font-variant-ligatures: none !important; font-feature-settings: "liga" 0, "calt" 0 !important; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<section class="cover">
+  <div class="glow"></div>
+  <svg class="rings" viewBox="0 0 210 297" fill="none" stroke="#ffc46b" stroke-width="0.18">
+    <circle cx="173" cy="91" r="34" opacity="0.55"/>
+    <circle cx="173" cy="91" r="58" opacity="0.38"/>
+    <circle cx="173" cy="91" r="86" opacity="0.26"/>
+    <circle cx="173" cy="91" r="118" opacity="0.17"/>
+    <circle cx="173" cy="91" r="154" opacity="0.11"/>
+    <circle cx="173" cy="91" r="194" opacity="0.07"/>
+  </svg>
+  <div class="top"><span>LUMEN PROGRAMMING LANGUAGE</span><span>VERSION {{version}}</span></div>
+  <div class="title">
+    <div class="wordmark">lumen</div>
+    <div class="sub">The Handbook</div>
+    <p class="blurb">A guide and reference to a small, dynamically typed language:
+    values, scope, functions, closures, errors and the command line.</p>
+  </div>
+  <div class="foot"><span>GUIDE AND REFERENCE</span><span>EVERY EXAMPLE EXECUTED</span></div>
+</section>
+
+<!-- ============================== CONTENTS ============================== -->
+<section class="contents">
+  <div class="eyebrow">THE LUMEN HANDBOOK</div>
+  <h1>Contents</h1>
+  <p class="intro">Chapters 1 to 8 teach the language in order. Chapters 9 to 12 are for
+  when something goes wrong, when you want worked programs, or when you want Lumen
+  inside a Rust program. The appendices are reference.</p>
+<!--TOC-->
+</section>
+
+<!-- ============================== 01 ============================== -->
+<chapter id="start" n="01" title="Getting Started">Install the interpreter, run a first
+program four different ways, and get comfortable in the interactive prompt.</chapter>
+
+<h2>Install</h2>
+<p>Lumen is a single native executable built from Rust source. With a Rust toolchain
+installed, build and install it from the project directory:</p>
+<shell>
+$ cargo install --path .
+$ lumen --version
+Lumen {{version}}
+</shell>
+<p>This places <code>lumen</code> in <code>~/.cargo/bin</code>. If that directory is on your
+<code>PATH</code>, the command works from anywhere.</p>
+
+<h2>A first program</h2>
+<p>Save this as <code>hello.lm</code>. The <code>.lm</code> extension is a convention, not a
+requirement.</p>
+<lumen>
+# hello.lm
+let name = "world"
+print "Hello, " + name
+</lumen>
+<p>Run it by passing the file to <code>lumen</code>:</p>
+<shell>
+$ lumen hello.lm
+Hello, world
+</shell>
+
+<h2>Four ways to run code</h2>
+<table>
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td><code>lumen</code></td><td class="wrap">Starts the interactive prompt (the REPL).</td></tr>
+<tr><td><code>lumen file.lm</code></td><td class="wrap">Runs a script.</td></tr>
+<tr><td><code>lumen -c 'print 6 * 7'</code></td><td class="wrap">Runs a program given as a string.</td></tr>
+<tr><td><code>lumen -</code></td><td class="wrap">Runs a program read from standard input. Piping into plain <code>lumen</code> does the same.</td></tr>
+<tr><td><code>lumen --version</code></td><td class="wrap">Prints the version. <code>-V</code> is the short form.</td></tr>
+<tr><td><code>lumen --help</code></td><td class="wrap">Prints usage. <code>-h</code> is the short form.</td></tr>
+</table>
+
+<h3>Executable scripts</h3>
+<p>Because <code>#</code> starts a comment, a Unix shebang line is valid Lumen. Mark the
+file executable and it runs like any other program:</p>
+<shell>
+$ head -1 examples/closures.lm
+#!/usr/bin/env lumen
+$ chmod +x examples/closures.lm
+$ ./examples/closures.lm
+</shell>
+
+<h2>The interactive prompt</h2>
+<p>Run <code>lumen</code> with no arguments to explore the language one entry at a time.</p>
+<shell>
+$ lumen
+Lumen {{version}} (linux x86_64)
+Ctrl-D to exit.
+> let x = 21
+> fn twice(n) {
+...     return n * 2
+... }
+> twice(x)
+42
+> print nope
+[line 1] RuntimeError: undefined variable 'nope'
+> x + 1
+22
+</shell>
+<ul>
+<li>While a <code>{</code> or <code>(</code> is still open, the prompt changes to
+<code>...</code> and keeps reading. That is how multi-line blocks are entered.</li>
+<li>A bare expression is evaluated and its value echoed, unless the value is <code>nil</code>.</li>
+<li>Everything you define stays defined. An error reports and returns you to the prompt.</li>
+<li>Arrow keys edit the line and recall history, which is saved in
+<code>~/.lumen_history</code> between sessions.</li>
+<li>Ctrl-C abandons a half-typed entry. Ctrl-D exits.</li>
+</ul>
+
+<h2>Exit codes</h2>
+<table>
+<tr><th>Code</th><th>Meaning</th></tr>
+<tr><td><code>0</code></td><td class="wrap">The program ran to completion.</td></tr>
+<tr><td><code>1</code></td><td class="wrap">A syntax or runtime error occurred, or the file could not be read. The message is on standard error.</td></tr>
+<tr><td><code>2</code></td><td class="wrap">The command line itself was wrong. Usage is printed.</td></tr>
+</table>
+
+<h2>What happens when you run a program</h2>
+<p>Lumen reads the whole program before running any of it. A syntax error anywhere in the
+file therefore stops the program before its first line executes.</p>
+<figure class="diagram">
+<svg viewBox="0 0 664 96" font-family="Adwaita Sans, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L8 4 L0 8 z" fill="#8b8f97"/>
+    </marker>
+  </defs>
+  <g font-size="10.5" fill="#4a4f59" text-anchor="middle">
+    <text x="52" y="43">source text</text>
+    <text x="258" y="43">tokens</text>
+    <text x="443" y="43">syntax tree</text>
+    <text x="630" y="43">output</text>
+  </g>
+  <g stroke="#8b8f97" stroke-width="1.1" marker-end="url(#arr)">
+    <line x1="90" y1="39" x2="114" y2="39"/>
+    <line x1="212" y1="39" x2="232" y2="39"/>
+    <line x1="284" y1="39" x2="306" y2="39"/>
+    <line x1="394" y1="39" x2="406" y2="39"/>
+    <line x1="480" y1="39" x2="494" y2="39"/>
+    <line x1="592" y1="39" x2="606" y2="39"/>
+  </g>
+  <g>
+    <rect x="118" y="18" width="92" height="42" rx="6" fill="#12151c"/>
+    <rect x="310" y="18" width="82" height="42" rx="6" fill="#12151c"/>
+    <rect x="498" y="18" width="92" height="42" rx="6" fill="#12151c"/>
+  </g>
+  <g font-size="11.5" font-weight="600" fill="#ffb454" text-anchor="middle">
+    <text x="164" y="43">Lexer</text>
+    <text x="351" y="43">Parser</text>
+    <text x="544" y="43">Interpreter</text>
+  </g>
+  <g font-size="8.6" fill="#8b8f97" text-anchor="middle">
+    <text x="164" y="78">splits text into words</text>
+    <text x="351" y="78">checks the grammar</text>
+    <text x="544" y="78">walks the tree and runs it</text>
+  </g>
+</svg>
+<figcaption>Lexer and parser problems are reported as <code>SyntaxError</code>. Problems while
+the interpreter is walking the tree are reported as <code>RuntimeError</code>.</figcaption>
+</figure>
+
+<!-- ============================== 02 ============================== -->
+<chapter id="values" n="02" title="Values and Types">Lumen has five kinds of value. Variables
+do not have types; the values in them do.</chapter>
+
+<table>
+<tr><th>Type</th><th>Written as</th><th>Notes</th></tr>
+<tr><td>number</td><td><code>42</code> &nbsp;<code>3.14</code></td><td class="wrap">One numeric type: a 64-bit float.</td></tr>
+<tr><td>string</td><td><code>"hello"</code></td><td class="wrap">Text in double quotes.</td></tr>
+<tr><td>boolean</td><td><code>true</code> &nbsp;<code>false</code></td><td class="wrap">The result of comparisons.</td></tr>
+<tr><td>nil</td><td><code>nil</code></td><td class="wrap">The absence of a value.</td></tr>
+<tr><td>function</td><td><code>fn(x) { return x }</code></td><td class="wrap">A value like any other. See chapters 6 and 7.</td></tr>
+</table>
+
+<h2>Numbers</h2>
+<p>There is no separate integer type. Whole numbers are exact up to 9,007,199,254,740,992
+(2<sup>53</sup>), and a number with no fractional part prints without a decimal point.</p>
+<lumen>
+print 42
+print 3.14
+print 7 / 2
+print 6 / 2          # a whole result prints as a whole number
+print 0.1 + 0.2      # floats are floats
+print 10 % 3
+print -7 % 3         # the result takes the sign of the right-hand side
+</lumen>
+<p>A number literal is digits, optionally followed by a point and more digits. There is no
+exponent form, and <code>.5</code> and <code>5.</code> are not numbers; write <code>0.5</code>
+and <code>5</code>.</p>
+
+<h2>Strings</h2>
+<p>Strings are written in double quotes and may contain four escape sequences.</p>
+<table>
+<tr><th>Escape</th><th>Produces</th></tr>
+<tr><td><code>\n</code></td><td>a new line</td></tr>
+<tr><td><code>\t</code></td><td>a tab</td></tr>
+<tr><td><code>\"</code></td><td>a double quote</td></tr>
+<tr><td><code>\\</code></td><td>a backslash</td></tr>
+</table>
+<lumen>
+print "Hello" + ", " + "world"
+print "She said \"hi\""
+print "one\ntwo"
+print "total: " + 42
+print len("lumen")
+</lumen>
+<p>The <code>+</code> operator joins strings. If only one side is a string, the other side is
+converted to text first, which is how <code>"total: " + 42</code> works. That is also the
+way to turn any value into a string: add it to <code>""</code>.</p>
+<aside><b>Note</b>Strings cannot be indexed or sliced, and there is no way to take one apart
+character by character. <code>len</code> and <code>+</code> are the string operations.</aside>
+
+<h2>Booleans and nil</h2>
+<p><code>true</code> and <code>false</code> come from comparisons and the logical operators.
+<code>nil</code> is what you get from a variable declared without a value, or from a function
+that does not return anything.</p>
+
+<h2>Truthiness</h2>
+<p>Any value can be used as a condition. The rule is short: <strong>only
+<code>false</code> and <code>nil</code> are falsy</strong>. Everything else counts as true,
+including zero and the empty string.</p>
+<lumen>
+if 0 { print "0 is truthy" }
+if "" { print "the empty string is truthy" }
+if nil { print "this line never prints" }
+if not nil { print "nil is falsy" }
+</lumen>
+
+<h2>Equality</h2>
+<p><code>==</code> and <code>!=</code> work on any two values and never raise an error.
+Values of different types are never equal, and nothing is converted to make them match.</p>
+<lumen>
+print 1 == 1
+print "a" == "a"
+print "1" == 1       # a string is never equal to a number
+print nil == false   # nil is only equal to nil
+print 0 == false
+</lumen>
+<p>Two function values are equal only when they are the very same function.</p>
+
+<!-- ============================== 03 ============================== -->
+<chapter id="scope" n="03" title="Variables and Scope">Names are introduced with
+<code>let</code>, changed with <code>=</code>, and visible only inside the block that
+declares them.</chapter>
+
+<h2>Declaring and assigning</h2>
+<lumen>
+let name = "Ada"
+let age              # no initial value: starts as nil
+print age
+age = 36
+print name + " is " + age
+</lumen>
+<p>A name is letters, digits and underscores, and cannot start with a digit. The thirteen
+keywords listed in Appendix B cannot be used as names.</p>
+<p><code>let</code> creates a variable. <code>=</code> changes one that already exists.
+Assigning to a name that was never declared is an error, which catches typos that would
+otherwise silently create a new variable.</p>
+<lumen fail>
+let count = 1
+cuont = 2
+</lumen>
+<p>Assignment is an expression: it produces the assigned value, and chains from right to
+left.</p>
+<lumen>
+let a = 0
+let b = 0
+a = b = 7
+print a + b
+</lumen>
+
+<h2>Blocks</h2>
+<p>A pair of braces is a block, and every block is a new scope. Variables declared inside
+disappear when the block ends. A block can stand on its own, and it is also what follows
+<code>if</code>, <code>while</code> and <code>fn</code>.</p>
+<lumen fail>
+{
+    let secret = 42
+    print secret
+}
+print secret
+</lumen>
+
+<h3>Shadowing</h3>
+<p>An inner block may declare a variable with the same name as an outer one. The inner
+name hides the outer one until the block ends; the outer variable is untouched.</p>
+<lumen>
+let x = "outer"
+{
+    let x = "inner"
+    print x
+}
+print x
+</lumen>
+
+<h3>Reaching outward</h3>
+<p>Without <code>let</code>, an assignment finds the nearest enclosing variable of that name
+and changes it.</p>
+<lumen>
+let total = 0
+{
+    total = total + 10    # no `let`: this is the outer total
+}
+print total
+</lumen>
+<aside class="warn"><b>Careful</b>The difference between <code>let total = ...</code> and
+<code>total = ...</code> inside a block is the difference between a new variable and
+changing the old one. Inside a loop body, a stray <code>let</code> gives you a fresh
+variable on every pass.</aside>
+
+<h2>Scope follows the text</h2>
+<p>Lumen is lexically scoped. A function sees the variables that were visible where it was
+<em>written</em>, not the ones visible where it is <em>called</em>.</p>
+<lumen>
+let x = "global"
+
+fn show() {
+    return x
+}
+
+fn test() {
+    let x = "local"     # show() does not see this one
+    return show()
+}
+
+print test()
+</lumen>
+<p>This one rule is what makes closures, the subject of chapter 7, work.</p>
+
+<!-- ============================== 04 ============================== -->
+<chapter id="operators" n="04" title="Operators">Arithmetic, comparison and logic, and the
+order in which they are applied.</chapter>
+
+<h2>Precedence</h2>
+<p>Operators lower in this table bind more tightly. All binary operators group from the
+left, so <code>10 - 4 - 3</code> is <code>(10 - 4) - 3</code>. Parentheses override
+everything.</p>
+<table>
+<tr><th>Level</th><th>Operators</th><th>Meaning</th></tr>
+<tr><td>1 (loosest)</td><td><code>=</code></td><td class="wrap">Assignment. Groups from the right.</td></tr>
+<tr><td>2</td><td><code>or</code></td><td class="wrap">Logical or.</td></tr>
+<tr><td>3</td><td><code>and</code></td><td class="wrap">Logical and.</td></tr>
+<tr><td>4</td><td><code>not</code></td><td class="wrap">Logical negation, written before its operand.</td></tr>
+<tr><td>5</td><td><code>==</code> &nbsp;<code>!=</code></td><td class="wrap">Equal, not equal.</td></tr>
+<tr><td>6</td><td><code>&lt;</code> &nbsp;<code>&lt;=</code> &nbsp;<code>&gt;</code> &nbsp;<code>&gt;=</code></td><td class="wrap">Ordering.</td></tr>
+<tr><td>7</td><td><code>+</code> &nbsp;<code>-</code></td><td class="wrap">Add or join, subtract.</td></tr>
+<tr><td>8</td><td><code>*</code> &nbsp;<code>/</code> &nbsp;<code>%</code></td><td class="wrap">Multiply, divide, remainder.</td></tr>
+<tr><td>9</td><td><code>-</code></td><td class="wrap">Negation, written before its operand.</td></tr>
+<tr><td>10 (tightest)</td><td><code>f(x)</code></td><td class="wrap">Function call.</td></tr>
+</table>
+<lumen>
+print 1 + 2 * 3        # multiplication first
+print (1 + 2) * 3
+print 10 - 4 - 3       # grouped from the left
+print -2 * 3
+print 1 + 2 < 4        # arithmetic before comparison
+print not 1 == 2       # comparison before `not`
+print true or false and false   # `and` before `or`
+</lumen>
+
+<h2>Arithmetic</h2>
+<p><code>-</code>, <code>*</code>, <code>/</code> and <code>%</code> require two numbers.
+<code>/</code> is always floating-point division. <code>%</code> is the remainder, with the
+sign of its right-hand side. Dividing or taking a remainder by zero is an error.</p>
+<lumen fail>
+let parts = 0
+print 100 / parts
+</lumen>
+<p>To divide and discard the remainder, subtract the remainder first:</p>
+<lumen>
+let n = 17
+print (n - n % 5) / 5
+</lumen>
+
+<h2>Comparison</h2>
+<p><code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code> and <code>&gt;=</code> compare
+two numbers, or two strings in dictionary order. Mixing the two is an error.</p>
+<lumen>
+print 3 < 10
+print "apple" < "banana"
+print "Zebra" < "apple"    # capitals sort before lower case
+</lumen>
+
+<h2>Logic</h2>
+<p><code>and</code> and <code>or</code> stop as soon as the answer is known, and they give
+back one of their operands rather than a plain <code>true</code> or <code>false</code>.</p>
+<ul>
+<li><code>a or b</code> is <code>a</code> if <code>a</code> is truthy, otherwise <code>b</code>.</li>
+<li><code>a and b</code> is <code>a</code> if <code>a</code> is falsy, otherwise <code>b</code>.</li>
+</ul>
+<lumen>
+print nil or "default"         # a fallback value
+print "first" and "second"
+print false and missing()      # missing() is never called
+print not "text"
+</lumen>
+<p>The third line does not fail even though no function named <code>missing</code> exists:
+the right-hand side is never evaluated. <code>not</code> always gives a boolean.</p>
+
+<h2>When types do not fit</h2>
+<p>Lumen does not guess. Apart from <code>+</code> with a string and <code>==</code>, an
+operator given the wrong kind of value stops the program and names both types.</p>
+<lumen fail>
+print "10" - 1
+</lumen>
+
+<!-- ============================== 05 ============================== -->
+<chapter id="flow" n="05" title="Control Flow">Two statements steer a program:
+<code>if</code> chooses, and <code>while</code> repeats.</chapter>
+
+<h2>if, else if, else</h2>
+<p>The condition is written without parentheses, and the braces are always required, even
+around a single statement.</p>
+<lumen>
+let temperature = 31
+
+if temperature > 30 {
+    print "hot"
+} else if temperature > 15 {
+    print "mild"
+} else {
+    print "cold"
+}
+</lumen>
+<p>Any value can be the condition; chapter 2 gives the truthiness rule. A short body can sit
+on one line:</p>
+<lumen>
+let name = ""
+if len(name) == 0 { name = "anonymous" }
+print name
+</lumen>
+
+<h2>while</h2>
+<p><code>while</code> evaluates its condition, runs the block if the condition is truthy, and
+repeats. It is the only loop.</p>
+<lumen>
+let n = 3
+while n > 0 {
+    print n
+    n = n - 1
+}
+print "liftoff"
+</lumen>
+
+<h3>Counting and accumulating</h3>
+<p>The usual pattern is a counter declared before the loop and advanced at the end of the
+body. Here the results are gathered into one string and printed once.</p>
+<lumen>
+let i = 1
+let line = ""
+while i <= 15 {
+    let word = i
+    if i % 15 == 0 {
+        word = "FizzBuzz"
+    } else if i % 3 == 0 {
+        word = "Fizz"
+    } else if i % 5 == 0 {
+        word = "Buzz"
+    }
+    line = line + word + " "
+    i = i + 1
+}
+print line
+</lumen>
+<p>Note where each variable lives. <code>i</code> and <code>line</code> are declared outside
+the loop, so they persist. <code>word</code> is declared inside the body, so each pass gets
+a fresh one.</p>
+
+<h2>Leaving a loop early</h2>
+<p>There is no <code>break</code> or <code>continue</code>. To stop in the middle of a loop,
+put the loop in a function and <code>return</code>.</p>
+<lumen>
+fn first_multiple(of, above) {
+    let n = above + 1
+    while true {
+        if n % of == 0 { return n }
+        n = n + 1
+    }
+}
+
+print first_multiple(7, 100)
+</lumen>
+<p>To skip the rest of one pass, wrap the rest of the body in an <code>if</code>.</p>
+<aside class="warn"><b>Careful</b>A <code>while</code> whose condition never becomes falsy
+runs forever. From the command line, Ctrl-C stops it.</aside>
+
+<!-- ============================== 06 ============================== -->
+<chapter id="functions" n="06" title="Functions">Functions package up behaviour. In Lumen
+they are also ordinary values: they can be stored, passed to other functions, and
+returned.</chapter>
+
+<h2>Declaring and calling</h2>
+<lumen>
+fn area(width, height) {
+    return width * height
+}
+
+print area(3, 4)
+</lumen>
+<p><code>return</code> ends the function and hands back a value. A function that reaches the
+end of its body, or uses <code>return</code> with nothing after it, gives back
+<code>nil</code>.</p>
+<lumen>
+fn greet(name) {
+    print "Hello, " + name
+}
+
+let result = greet("Ada")
+print result
+</lumen>
+<p>A call must supply exactly as many arguments as the function has parameters.</p>
+<lumen fail>
+fn area(width, height) {
+    return width * height
+}
+print area(3)
+</lumen>
+
+<h2>Functions are values</h2>
+<p>The word <code>fn</code> without a name creates a function on the spot. In fact
+<code>fn area(...) {...}</code> is only a shorter way of writing
+<code>let area = fn(...) {...}</code>.</p>
+<lumen>
+let double = fn(x) { return x * 2 }
+print double(21)
+print double
+print fn(x) { return x * x }(9)     # created and called at once
+</lumen>
+
+<h3>Passing functions</h3>
+<lumen>
+fn apply_twice(f, value) {
+    return f(f(value))
+}
+
+fn add_ten(n) { return n + 10 }
+
+print apply_twice(add_ten, 1)
+print apply_twice(fn(s) { return s + "!" }, "wow")
+</lumen>
+
+<h3>Returning functions</h3>
+<lumen>
+fn compose(f, g) {
+    return fn(x) { return f(g(x)) }
+}
+
+let inc = fn(x) { return x + 1 }
+let square = fn(x) { return x * x }
+
+print compose(square, inc)(4)    # square(inc(4))
+print compose(inc, square)(4)    # inc(square(4))
+</lumen>
+
+<h2>Recursion</h2>
+<p>A function may call itself. Every recursive function needs a case that does not recurse,
+or it will never finish.</p>
+<lumen>
+fn factorial(n) {
+    if n <= 1 { return 1 }
+    return n * factorial(n - 1)
+}
+
+fn fib(n) {
+    if n < 2 { return n }
+    return fib(n - 1) + fib(n - 2)
+}
+
+print factorial(10)
+print fib(20)
+</lumen>
+<p>Functions can also call each other, in either order, because a name is looked up when
+the call happens, not when the function is written.</p>
+<lumen>
+fn is_even(n) {
+    if n == 0 { return true }
+    return is_odd(n - 1)
+}
+
+fn is_odd(n) {
+    if n == 0 { return false }
+    return is_even(n - 1)
+}
+
+print is_even(10)
+print is_even(7)
+</lumen>
+
+<h3>The depth limit</h3>
+<p>Calls may nest 10,000 deep. Beyond that the program stops with a clear error instead of
+crashing.</p>
+<lumen fail>
+fn forever(n) {
+    return forever(n + 1)
+}
+forever(0)
+</lumen>
+<aside><b>Note</b>There is no tail-call optimisation, so a loop that runs more than 10,000
+times should be a <code>while</code>, not a recursion.</aside>
+
+<!-- ============================== 07 ============================== -->
+<chapter id="closures" n="07" title="Closures">A function remembers the variables that were
+in scope where it was created, and keeps them alive. That single idea gives Lumen private
+state, configurable functions, and even data structures.</chapter>
+
+<h2>A function that remembers</h2>
+<lumen>
+fn make_counter() {
+    let count = 0
+    return fn() {
+        count = count + 1
+        return count
+    }
+}
+
+let a = make_counter()
+let b = make_counter()
+
+a()
+a()
+print "a: " + a()
+print "b: " + b()
+</lumen>
+<p><code>make_counter</code> has returned, yet <code>count</code> lives on, because the
+function it returned still refers to it. Each call to <code>make_counter</code> creates a
+new <code>count</code>, so <code>a</code> and <code>b</code> count separately. Nothing
+outside can reach either <code>count</code> except through its function.</p>
+
+<figure class="diagram">
+<svg viewBox="0 0 664 236" font-family="Adwaita Sans, sans-serif">
+  <defs>
+    <marker id="arr2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L8 4 L0 8 z" fill="#a86400"/>
+    </marker>
+    <marker id="arr3" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L8 4 L0 8 z" fill="#666b74"/>
+    </marker>
+  </defs>
+  <rect x="1" y="50" width="232" height="136" rx="7" fill="#f8f4e9" stroke="#e4dfd2"/>
+  <text x="16" y="72" font-size="8" font-weight="700" letter-spacing="1.6" fill="#666b74">GLOBAL SCOPE</text>
+  <g font-family="JetBrains Mono, monospace" font-size="10.5" fill="#17191e">
+    <text x="16" y="100">make_counter</text>
+    <text x="16" y="132">a</text>
+    <text x="16" y="164">b</text>
+  </g>
+  <g font-size="9.5" fill="#4a4f59">
+    <text x="118" y="100">a function</text>
+    <text x="38" y="132">a function that remembers</text>
+    <text x="38" y="164">a function that remembers</text>
+  </g>
+  <rect x="408" y="50" width="255" height="56" rx="7" fill="#12151c"/>
+  <rect x="408" y="130" width="255" height="56" rx="7" fill="#12151c"/>
+  <g font-size="8" font-weight="700" letter-spacing="1.6" fill="#9aa0ab">
+    <text x="424" y="71">SCOPE OF THE FIRST CALL</text>
+    <text x="424" y="151">SCOPE OF THE SECOND CALL</text>
+  </g>
+  <g font-family="JetBrains Mono, monospace" font-size="11" fill="#ffb454">
+    <text x="424" y="92">count = 3</text>
+    <text x="424" y="172">count = 1</text>
+  </g>
+  <g stroke="#a86400" stroke-width="1.2" fill="none" marker-end="url(#arr2)">
+    <path d="M176 128 C 280 128, 310 78, 404 78"/>
+    <path d="M176 160 C 280 160, 320 158, 404 158"/>
+  </g>
+  <g stroke="#666b74" stroke-width="1" stroke-dasharray="3 3" fill="none" marker-end="url(#arr3)">
+    <path d="M536 50 C 536 16, 118 16, 118 46"/>
+    <path d="M536 186 C 536 220, 118 220, 118 190"/>
+  </g>
+  <g font-size="8.4" fill="#666b74" text-anchor="middle">
+    <text x="327" y="15">enclosed by</text>
+    <text x="327" y="232">enclosed by</text>
+  </g>
+</svg>
+<figcaption>After the program above has run. Each counter function holds on to the scope of
+the call that created it, and each scope has its own <code>count</code>.</figcaption>
+</figure>
+
+<h2>The variable, not a copy</h2>
+<p>A closure holds the variable itself. If the variable changes later, the closure sees the
+new value.</p>
+<lumen>
+let greeting = "Hello"
+let greet = fn(name) { return greeting + ", " + name }
+
+print greet("Ada")
+greeting = "Goodbye"
+print greet("Ada")
+</lumen>
+
+<h2>Configured functions</h2>
+<p>A function that takes a setting and returns a function is a cheap way to make a family
+of related functions.</p>
+<lumen>
+fn multiplier(factor) {
+    return fn(x) { return x * factor }
+}
+
+let double = multiplier(2)
+let percent = multiplier(0.01)
+
+print double(21)
+print percent(250)
+</lumen>
+
+<h2>Private state</h2>
+<p>A closure can guard its data and decide what is allowed. Here the balance can only be
+changed through the function, and the function refuses to overdraw.</p>
+<lumen>
+fn make_account(balance) {
+    return fn(action, amount) {
+        if action == "deposit" {
+            balance = balance + amount
+        }
+        if action == "withdraw" {
+            if amount > balance { return "insufficient funds" }
+            balance = balance - amount
+        }
+        return balance
+    }
+}
+
+let account = make_account(100)
+print account("deposit", 50)
+print account("withdraw", 30)
+print account("withdraw", 500)
+print account("balance", 0)
+</lumen>
+
+<h2>Data from closures</h2>
+<p>Lumen has no lists. A closure that remembers two values is enough to build one: each
+cell holds an item and the rest of the list, and <code>nil</code> marks the end.</p>
+<lumen>
+fn cons(head, tail) {
+    return fn(want_head) {
+        if want_head { return head }
+        return tail
+    }
+}
+fn head(list) { return list(true) }
+fn tail(list) { return list(false) }
+
+fn range(from, to) {
+    if from > to { return nil }
+    return cons(from, range(from + 1, to))
+}
+
+fn map(f, list) {
+    if list == nil { return nil }
+    return cons(f(head(list)), map(f, tail(list)))
+}
+
+fn sum(list) {
+    if list == nil { return 0 }
+    return head(list) + sum(tail(list))
+}
+
+fn show(list) {
+    let text = "["
+    while list != nil {
+        text = text + head(list)
+        list = tail(list)
+        if list != nil { text = text + ", " }
+    }
+    return text + "]"
+}
+
+print show(range(1, 6))
+print show(map(fn(x) { return x * x }, range(1, 6)))
+print sum(range(1, 100))
+</lumen>
+<p>Everything in this program is functions and closures: the list cells, the operations on
+them, and the squaring function handed to <code>map</code>.</p>
+
+<!-- ============================== 08 ============================== -->
+<chapter id="builtins" n="08" title="Built-in Functions">Two functions are available
+everywhere without being declared.</chapter>
+
+<table>
+<tr><th>Function</th><th>Arguments</th><th>Returns</th></tr>
+<tr><td><code>len(s)</code></td><td>one string</td><td class="wrap">The number of characters in <code>s</code>.</td></tr>
+<tr><td><code>clock()</code></td><td>none</td><td class="wrap">The current time as seconds since 1 January 1970 (UTC), with a fractional part.</td></tr>
+</table>
+
+<h2>len</h2>
+<lumen>
+print len("lumen")
+print len("")
+print len("naïve café")       # characters, not bytes
+</lumen>
+<p><code>len</code> accepts only strings.</p>
+<lumen fail>
+print len(12345)
+</lumen>
+<p>To count the digits of a number, turn it into a string first:</p>
+<lumen>
+print len("" + 12345)
+</lumen>
+
+<h2>clock</h2>
+<p>The absolute value of <code>clock()</code> is rarely interesting. The difference between
+two readings is: it tells you how long something took.</p>
+<lumen>
+fn fib(n) {
+    if n < 2 { return n }
+    return fib(n - 1) + fib(n - 2)
+}
+
+let start = clock()
+let result = fib(22)
+let elapsed = clock() - start
+
+print "fib(22) = " + result
+print "finished in under a second: " + (elapsed < 1)
+</lumen>
+
+<h2>Built-ins are ordinary values</h2>
+<p>They can be stored, passed around and printed like any function. They can also be
+shadowed: a <code>let len = ...</code> of your own hides the built-in within that scope.</p>
+<lumen>
+let measure = len
+print measure("four")
+print len
+print clock == clock
+</lumen>
+
+<!-- ============================== 09 ============================== -->
+<chapter id="errors" n="09" title="Errors">When Lumen cannot continue, it says what went
+wrong and on which line. There are two kinds of error, and they happen at different
+times.</chapter>
+
+<h2>Reading an error</h2>
+<plain>
+[line 3] RuntimeError: undefined variable 'totl'
+ ------  ------------  -------------------------
+ where   which kind    what happened
+</plain>
+<p>Errors are written to standard error, and the process exits with code 1.</p>
+
+<h2>Syntax errors</h2>
+<p>A syntax error means the text is not a valid program. The whole file is checked before
+anything runs, so a syntax error on the last line prevents the first line from running.</p>
+<lumen fail>
+print "this never prints"
+let total = (1 + 2
+</lumen>
+<table>
+<tr><th>Message</th><th>Cause</th></tr>
+<tr><td class="wrap"><code>expected expression, found ...</code></td><td class="wrap">A value was needed and something else was there, such as after <code>let x =</code> or a trailing operator.</td></tr>
+<tr><td class="wrap"><code>expected '{'</code> / <code>'}'</code> / <code>')'</code></td><td class="wrap">A bracket is missing. Missing closers are reported where the parser gave up, often the end of the file.</td></tr>
+<tr><td class="wrap"><code>expected variable name</code></td><td class="wrap"><code>let</code> was not followed by a name, or the name is a keyword.</td></tr>
+<tr><td class="wrap"><code>expected parameter name</code></td><td class="wrap">Something other than a name appeared in a parameter list.</td></tr>
+<tr><td class="wrap"><code>expected newline or ';' after statement</code></td><td class="wrap">Two statements share a line without a <code>;</code> between them.</td></tr>
+<tr><td class="wrap"><code>invalid assignment target</code></td><td class="wrap">The left of <code>=</code> is not a variable name, as in <code>a + b = 3</code>.</td></tr>
+<tr><td class="wrap"><code>'return' outside of a function</code></td><td class="wrap"><code>return</code> at the top level of a program.</td></tr>
+<tr><td class="wrap"><code>duplicate parameter 'x'</code></td><td class="wrap">Two parameters of one function share a name.</td></tr>
+<tr><td class="wrap"><code>unterminated string</code></td><td class="wrap">A string's closing quote is missing. The line is where the string began.</td></tr>
+<tr><td class="wrap"><code>invalid escape '\q'</code></td><td class="wrap">A backslash followed by anything other than <code>n</code>, <code>t</code>, <code>"</code> or <code>\</code>.</td></tr>
+<tr><td class="wrap"><code>unexpected character '@'</code></td><td class="wrap">A character that is not part of the language, outside a string or comment.</td></tr>
+</table>
+
+<h2>Runtime errors</h2>
+<p>A runtime error happens while the program is running. Everything before the failing
+line has already taken effect, and its output has already been printed.</p>
+<lumen fail>
+print "step 1"
+print "step 2"
+print missing_value
+print "step 3"
+</lumen>
+<table>
+<tr><th>Message</th><th>Cause</th></tr>
+<tr><td class="wrap"><code>undefined variable 'x'</code></td><td class="wrap">Reading a name that is not declared in any enclosing scope.</td></tr>
+<tr><td class="wrap"><code>cannot assign to undefined variable 'x'</code></td><td class="wrap">Assigning without a prior <code>let</code>.</td></tr>
+<tr><td class="wrap"><code>unsupported operands for '-': string and number</code></td><td class="wrap">An operator was given types it does not accept. Both types are named.</td></tr>
+<tr><td class="wrap"><code>operand of unary '-' must be a number, got string</code></td><td class="wrap">Negating something that is not a number.</td></tr>
+<tr><td class="wrap"><code>division by zero</code> / <code>modulo by zero</code></td><td class="wrap">The right-hand side of <code>/</code> or <code>%</code> was zero.</td></tr>
+<tr><td class="wrap"><code>can only call functions, not string</code></td><td class="wrap">Call parentheses after a value that is not a function.</td></tr>
+<tr><td class="wrap"><code>&lt;fn f&gt; expects 2 argument(s), got 1</code></td><td class="wrap">The number of arguments does not match the number of parameters.</td></tr>
+<tr><td class="wrap"><code>len() expects a string, got number</code></td><td class="wrap">A built-in was given the wrong type.</td></tr>
+<tr><td class="wrap"><code>stack overflow</code></td><td class="wrap">More than 10,000 nested calls, almost always a recursion with no stopping case.</td></tr>
+</table>
+
+<h2>Which line is reported</h2>
+<p>The line is that of the operator, the opening parenthesis of the call, or the variable
+name involved. When the error is inside a function, it is the line inside the function, not
+the line that called it.</p>
+<lumen fail>
+fn average(total, count) {
+    return total / count
+}
+
+print average(10, 4)
+print average(10, 0)
+</lumen>
+
+<h2>Working without exceptions</h2>
+<p>Lumen has no way to catch an error: a runtime error ends the program. Check before you
+act, and return <code>nil</code> or a message when a function cannot do its job.</p>
+<lumen>
+fn safe_divide(a, b) {
+    if b == 0 { return nil }
+    return a / b
+}
+
+let answer = safe_divide(10, 0)
+print answer or "cannot divide by zero"
+</lumen>
+
+<!-- ============================== 10 ============================== -->
+<chapter id="layout" n="10" title="Lines and Layout">Lumen has no statement terminator.
+A handful of rules about line breaks make that work, and each is worth knowing once.</chapter>
+
+<h2>One statement per line</h2>
+<p>A statement ends at the end of its line. To put two on one line, separate them with a
+semicolon. The semicolon is never needed otherwise.</p>
+<lumen>
+let a = 1; let b = 2
+print a + b
+</lumen>
+<lumen fail>
+let a = 1 let b = 2
+</lumen>
+<p>Statements that end in a block need no separator, which is why
+<code>if x { ... } else { ... }</code> and one-line functions read naturally.</p>
+
+<h2>Continuing an expression</h2>
+<p>An expression carries on to the next line whenever it is plainly unfinished: after an
+operator, inside parentheses, or when the next line begins with a binary operator.</p>
+<lumen>
+let trailing = 1 +
+    2 +
+    3
+
+let leading = 1
+    + 2
+    + 3
+
+print trailing
+print leading
+</lumen>
+
+<h2>Three rules about the same line</h2>
+<h3>A call's parenthesis stays with the function</h3>
+<p>The <code>(</code> that begins an argument list must be on the same line as what it
+calls. A <code>(</code> at the start of a line always begins a new statement.</p>
+<lumen>
+fn five() { return 5 }
+
+let f = five
+(1 + 2)          # a separate statement, not a call to five
+
+print f
+</lumen>
+
+<h3>A return value starts on the return line</h3>
+<p>If nothing follows <code>return</code> on its own line, the function returns
+<code>nil</code>, and whatever is on the next line is a separate statement.</p>
+<lumen>
+fn oops() {
+    return
+    42
+}
+
+print oops()
+</lumen>
+
+<h3>else follows the closing brace</h3>
+<p>In a file, <code>else</code> may be on the line after the <code>}</code>. In the
+interactive prompt it must be on the same line, because a complete entry is run as soon as
+its brackets balance.</p>
+
+<aside class="warn"><b>Careful</b>A line that begins with <code>-</code> continues the line
+before it, because <code>-</code> is also a binary operator. <code>let a = 1</code> followed
+by a line reading <code>-a</code> is parsed as <code>let a = 1 - a</code>. If a statement
+must begin with a minus sign, end the previous line with a semicolon.</aside>
+
+<h2>Comments and blank space</h2>
+<p>A <code>#</code> begins a comment that runs to the end of the line. Indentation and blank
+lines are ignored; four spaces per level is the convention used in this handbook. A string
+may contain a line break, which becomes part of the string.</p>
+<lumen>
+# A whole-line comment.
+let poem = "roses are red
+violets are blue"      # a comment after code
+print poem
+</lumen>
+
+<!-- ============================== 11 ============================== -->
+<chapter id="recipes" n="11" title="Recipes">Short, complete programs for common jobs. Each
+one runs as printed.</chapter>
+
+<h2>Smallest, largest, absolute value</h2>
+<lumen>
+fn min(a, b) { if a < b { return a } return b }
+fn max(a, b) { if a > b { return a } return b }
+fn abs(n) { if n < 0 { return -n } return n }
+
+print min(3, 8)
+print max(3, 8)
+print abs(-12.5)
+</lumen>
+
+<h2>Whole-number division and rounding</h2>
+<lumen>
+fn floor(n) { return n - n % 1 }
+fn div(a, b) { return floor(a / b) }
+fn round(n) { return floor(n + 0.5) }
+
+print floor(7.9)
+print div(17, 5)
+print round(2.5)
+print round(2.49)
+</lumen>
+
+<h2>Greatest common divisor</h2>
+<lumen>
+fn gcd(a, b) {
+    while b != 0 {
+        let rest = a % b
+        a = b
+        b = rest
+    }
+    return a
+}
+
+fn lcm(a, b) { return a / gcd(a, b) * b }
+
+print gcd(1071, 462)
+print lcm(4, 6)
+</lumen>
+
+<h2>Powers</h2>
+<p>Squaring halves the work at every step, so even large exponents take few
+multiplications.</p>
+<lumen>
+fn pow(base, exp) {
+    if exp == 0 { return 1 }
+    let half = pow(base, (exp - exp % 2) / 2)
+    if exp % 2 == 0 { return half * half }
+    return half * half * base
+}
+
+print pow(2, 10)
+print pow(3, 13)
+print pow(1.5, 2)
+</lumen>
+
+<h2>Prime numbers</h2>
+<lumen>
+fn is_prime(n) {
+    if n < 2 { return false }
+    let d = 2
+    while d * d <= n {
+        if n % d == 0 { return false }
+        d = d + 1
+    }
+    return true
+}
+
+let n = 1
+let found = ""
+while n < 50 {
+    if is_prime(n) { found = found + n + " " }
+    n = n + 1
+}
+print found
+</lumen>
+
+<h2>Repeating and padding text</h2>
+<lumen>
+fn repeat(text, times) {
+    let out = ""
+    while times > 0 {
+        out = out + text
+        times = times - 1
+    }
+    return out
+}
+
+fn pad_left(value, width) {
+    let text = "" + value
+    return repeat(" ", width - len(text)) + text
+}
+
+print repeat("=-", 12)
+print pad_left(7, 6) + pad_left(42, 6) + pad_left(1234, 6)
+print pad_left(100, 6) + pad_left(3.5, 6) + pad_left(0, 6)
+</lumen>
+
+<h2>Number to binary</h2>
+<lumen>
+fn to_binary(n) {
+    if n < 2 { return "" + n }
+    return to_binary((n - n % 2) / 2) + n % 2
+}
+
+print to_binary(5)
+print to_binary(255)
+print to_binary(1024)
+</lumen>
+
+<h2>Run something n times</h2>
+<p>A function that takes a function is Lumen's substitute for a <code>for</code> loop.</p>
+<lumen>
+fn times(n, action) {
+    let i = 1
+    while i <= n {
+        action(i)
+        i = i + 1
+    }
+}
+
+let total = 0
+times(100, fn(i) { total = total + i })
+print total
+
+times(3, fn(i) { print "pass " + i })
+</lumen>
+
+<h2>Towers of Hanoi</h2>
+<p>Recursion decides the moves; a callback decides what to do with each one. The same
+solver first prints the moves, then merely counts them.</p>
+<lumen>
+fn hanoi(n, from, to, via, on_move) {
+    if n == 0 { return }
+    hanoi(n - 1, from, via, to, on_move)
+    on_move(from, to)
+    hanoi(n - 1, via, to, from, on_move)
+}
+
+hanoi(2, "A", "C", "B", fn(from, to) { print from + " -> " + to })
+
+let moves = 0
+hanoi(10, "A", "C", "B", fn(from, to) { moves = moves + 1 })
+print "10 discs: " + moves + " moves"
+</lumen>
+
+<!-- ============================== 12 ============================== -->
+<chapter id="embedding" n="12" title="Embedding in Rust">The interpreter is also a Rust
+library, so a Rust program can run Lumen code and read the results.</chapter>
+
+<h2>Running code</h2>
+<p>Add the crate as a dependency, create an <code>Interpreter</code>, and call
+<code>run</code>. Global variables and functions persist from one <code>run</code> to the
+next, exactly as they do in the interactive prompt.</p>
+<plain>
+use lumen::{Interpreter, LumenError};
+
+let mut interp = Interpreter::new(); // `print` goes to stdout
+interp.run("let greeting = \"2 + 2 = \"").unwrap();
+interp.run("print greeting + (2 + 2)").unwrap(); // globals persist between runs
+
+match interp.run("print 1 / 0") {
+    Err(LumenError::Runtime(e)) => {
+        assert_eq!((e.line, e.message.as_str()), (1, "division by zero"))
+    }
+    other => panic!("expected a runtime error, got {other:?}"),
+}
+</plain>
+
+<h2>The API</h2>
+<table>
+<tr><th>Item</th><th>Purpose</th></tr>
+<tr><td class="wrap"><code>Interpreter::new()</code></td><td class="wrap">An interpreter whose <code>print</code> writes to standard output.</td></tr>
+<tr><td class="wrap"><code>Interpreter::with_output(f)</code></td><td class="wrap">An interpreter that hands each printed line to the closure <code>f</code> instead.</td></tr>
+<tr><td class="wrap"><code>interp.run(source)</code></td><td class="wrap">Runs source text. Returns <code>Ok(Some(value))</code> if the last statement was an expression, <code>Ok(None)</code> otherwise, or <code>Err(LumenError)</code>.</td></tr>
+<tr><td class="wrap"><code>Value</code></td><td class="wrap">A Lumen value: <code>Nil</code>, <code>Bool</code>, <code>Num</code>, <code>Str</code>, <code>Fn</code> or <code>Builtin</code>. It implements <code>Display</code> the way <code>print</code> shows it.</td></tr>
+<tr><td class="wrap"><code>LumenError</code></td><td class="wrap">Either <code>Syntax(LumenSyntaxError)</code> or <code>Runtime(LumenRuntimeError)</code>. Both carry <code>line</code> and <code>message</code>.</td></tr>
+<tr><td class="wrap"><code>Session</code></td><td class="wrap">The prompt's line-by-line logic: <code>feed(line)</code> returns <code>None</code> while brackets are open, then the result of the whole entry.</td></tr>
+<tr><td class="wrap"><code>tokenize</code>, <code>parse</code></td><td class="wrap">The lexer and parser on their own, for tools that inspect programs without running them.</td></tr>
+<tr><td class="wrap"><code>run_on_big_stack(f)</code></td><td class="wrap">Runs <code>f</code> on a thread with a 256 MiB stack.</td></tr>
+</table>
+
+<h2>Capturing output</h2>
+<plain>
+use std::{cell::RefCell, rc::Rc};
+use lumen::Interpreter;
+
+let lines = Rc::new(RefCell::new(Vec::new()));
+let sink = lines.clone();
+let mut interp = Interpreter::with_output(move |line| sink.borrow_mut().push(line.to_string()));
+
+interp.run("print 6 * 7").unwrap();
+assert_eq!(*lines.borrow(), ["42"]);
+</plain>
+
+<aside class="warn"><b>Careful</b>The interpreter recurses on the native stack. A deeply
+recursive Lumen program can exhaust a default-sized thread stack before it reaches the
+10,000-call limit, which aborts the host process. Wrap the work in
+<code>lumen::run_on_big_stack(|| ...)</code>, as the <code>lumen</code> command does.</aside>
+
+<!-- ============================== A ============================== -->
+<chapter id="grammar" n="A" title="Grammar">The complete syntax, in EBNF. Braces mean
+"zero or more", square brackets mean "optional", and a bar separates alternatives.</chapter>
+
+<h2>Statements</h2>
+<plain>
+program     = { statement } ;
+
+statement   = letStmt | fnDecl | printStmt | ifStmt
+            | whileStmt | returnStmt | block | exprStmt ;
+
+letStmt     = "let" IDENT [ "=" expression ] ;
+fnDecl      = "fn" IDENT "(" [ params ] ")" block ;
+printStmt   = "print" expression ;
+ifStmt      = "if" expression block [ "else" ( ifStmt | block ) ] ;
+whileStmt   = "while" expression block ;
+returnStmt  = "return" [ expression ] ;
+block       = "{" { statement } "}" ;
+exprStmt    = expression ;
+
+params      = IDENT { "," IDENT } ;
+</plain>
+
+<h2>Expressions</h2>
+<plain>
+expression  = assignment ;
+assignment  = IDENT "=" assignment | logicOr ;
+logicOr     = logicAnd   { "or"  logicAnd } ;
+logicAnd    = equality   { "and" equality } ;
+equality    = comparison { ( "==" | "!=" ) comparison } ;
+comparison  = term       { ( "<" | "<=" | ">" | ">=" ) term } ;
+term        = factor     { ( "+" | "-" ) factor } ;
+factor      = unary      { ( "*" | "/" | "%" ) unary } ;
+unary       = "-" unary | "not" equality | call ;
+call        = primary { "(" [ arguments ] ")" } ;
+arguments   = expression { "," expression } ;
+
+primary     = NUMBER | STRING | "true" | "false" | "nil" | IDENT
+            | "(" expression ")"
+            | "fn" "(" [ params ] ")" block ;
+</plain>
+
+<h2>Tokens</h2>
+<plain>
+NUMBER      = DIGIT { DIGIT } [ "." DIGIT { DIGIT } ] ;
+STRING      = '"' { any character except '"' and '\' | ESCAPE } '"' ;
+ESCAPE      = "\n" | "\t" | '\"' | "\\" ;
+IDENT       = ( LETTER | "_" ) { LETTER | DIGIT | "_" } ;   (not a keyword)
+COMMENT     = "#" { any character except a line break } ;
+</plain>
+<p>Letters are <code>a</code> to <code>z</code> and <code>A</code> to <code>Z</code>.
+Statements are separated by line breaks or <code>;</code>, under the rules of chapter 10,
+which the grammar above does not express.</p>
+
+<!-- ============================== B ============================== -->
+<chapter id="reference" n="B" title="Quick Reference">The whole language on one page.</chapter>
+
+<div class="cards">
+  <div class="card wide kw-list">
+    <h3>Keywords</h3>
+    <code>let</code><code>fn</code><code>return</code><code>if</code><code>else</code><code>while</code><code>print</code><code>true</code><code>false</code><code>nil</code><code>and</code><code>or</code><code>not</code>
+  </div>
+  <div class="card">
+    <h3>Statements</h3>
+<pre>let x = 1
+x = x + 1
+print x
+if x > 1 { } else if x == 1 { } else { }
+while x > 0 { x = x - 1 }
+fn name(a, b) { return a + b }
+return
+{ let scoped = 1 }</pre>
+  </div>
+  <div class="card">
+    <h3>Expressions</h3>
+<pre>42   3.14   "text"   true   false   nil
+a + b   a - b   a * b   a / b   a % b
+a == b   a != b
+a &lt; b   a &lt;= b   a &gt; b   a &gt;= b
+a and b   a or b   not a   -a
+f(x, y)
+fn(x) { return x }
+( a + b ) * c</pre>
+  </div>
+  <div class="card">
+    <h3>Rules to remember</h3>
+    <ul>
+      <li>Only <code>false</code> and <code>nil</code> are falsy.</li>
+      <li><code>+</code> joins when either side is a string.</li>
+      <li>Different types are never <code>==</code>.</li>
+      <li><code>let</code> declares; <code>=</code> needs an existing name.</li>
+      <li>Braces are required; conditions take no parentheses.</li>
+      <li>One statement per line, or separate with <code>;</code>.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Built-ins and escapes</h3>
+    <p><code>len(s)</code> characters in a string</p>
+    <p><code>clock()</code> seconds since 1970</p>
+    <p style="margin-top:2.4mm"><code>\n</code> new line &nbsp; <code>\t</code> tab</p>
+    <p><code>\"</code> quote &nbsp; <code>\\</code> backslash</p>
+    <p><code>#</code> comment to end of line</p>
+  </div>
+  <div class="card wide">
+    <h3>Command line</h3>
+<pre>lumen                 start the interactive prompt
+lumen file.lm         run a script
+lumen -c CODE         run a program passed as a string
+lumen -               run a program read from standard input (also when input is piped)
+lumen -V, --version   print the version
+lumen -h, --help      print usage
+
+exit codes            0 success    1 Lumen error or unreadable file    2 bad usage</pre>
+  </div>
+</div>
+
+<!-- ============================== C ============================== -->
+<chapter id="limits" n="C" title="Limits and Known Gaps">What Lumen {{version}} does not do,
+stated plainly, with the usual way around each.</chapter>
+
+<table>
+<tr><th>Limit</th><th>Detail and workaround</th></tr>
+<tr><td class="wrap">No lists or maps</td><td class="wrap">Functions are the only compound value. Build structures from closures, as in chapter 7.</td></tr>
+<tr><td class="wrap">No string indexing</td><td class="wrap">Strings can be joined, compared and measured, but not sliced or searched.</td></tr>
+<tr><td class="wrap">No <code>break</code>, <code>continue</code> or <code>for</code></td><td class="wrap">Put the loop in a function and <code>return</code>; see chapters 5 and 11.</td></tr>
+<tr><td class="wrap">No error handling</td><td class="wrap">A runtime error ends the program. Check first and return <code>nil</code>; see chapter 9.</td></tr>
+<tr><td class="wrap">No input</td><td class="wrap">A program cannot read the keyboard, files or its command-line arguments.</td></tr>
+<tr><td class="wrap">No modules</td><td class="wrap">A program is one file.</td></tr>
+<tr><td class="wrap">Call depth of 10,000</td><td class="wrap">No tail-call optimisation. Use <code>while</code> for long repetition.</td></tr>
+<tr><td class="wrap">Number literals</td><td class="wrap">No exponent form; a digit is required on both sides of the point.</td></tr>
+<tr><td class="wrap">Whole numbers above 2<sup>53</sup></td><td class="wrap">All numbers are 64-bit floats, so very large whole numbers lose exactness.</td></tr>
+<tr><td class="wrap">One error at a time</td><td class="wrap">Only the first syntax error in a file is reported.</td></tr>
+<tr><td class="wrap">Leading minus</td><td class="wrap">A line beginning with <code>-</code> continues the previous line; see chapter 10.</td></tr>
+<tr><td class="wrap">Ctrl-C while running</td><td class="wrap">Interrupting a running program ends <code>lumen</code>, including the interactive prompt.</td></tr>
+<tr><td class="wrap">Memory</td><td class="wrap">There is no garbage collector. A closure stored in the scope it captured is not freed until the program exits.</td></tr>
+<tr><td class="wrap">Prompt line numbers</td><td class="wrap">In the interactive prompt, line numbers in errors count from the start of the current entry.</td></tr>
+</table>
+
+<div class="colophon">
+The Lumen Handbook, for Lumen {{version}}. Every program printed in a dark panel was run by
+the <code>lumen</code> executable when this document was built, and the output and error
+panels show exactly what it produced. Terminal transcripts and Rust listings were checked by
+hand. Set in P052, Adwaita Sans and JetBrains Mono.
+</div>
+
+</body>
+</html>

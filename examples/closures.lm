@@ -1,0 +1,76 @@
+#!/usr/bin/env lumen
+# closures.lm - closures and recursion in Lumen.
+# Expected output: examples/closures.expected.txt
+
+# --- Closures: each counter keeps its own private `count` ---
+fn make_counter() {
+    let count = 0
+    return fn() {
+        count = count + 1
+        return count
+    }
+}
+
+let a = make_counter()
+let b = make_counter()
+a()
+a()
+print "counter a: " + a()
+print "counter b: " + b()
+
+# --- Functions that build functions ---
+fn adder(n) {
+    return fn(x) { return x + n }
+}
+
+fn compose(f, g) {
+    return fn(x) { return f(g(x)) }
+}
+
+let add5 = adder(5)
+let double = fn(x) { return x * 2 }
+print "add5(10) = " + add5(10)
+print "double(add5(1)) = " + compose(double, add5)(1)
+
+# --- Recursion ---
+fn fact(n) {
+    if n <= 1 { return 1 }
+    return n * fact(n - 1)
+}
+
+fn fib(n) {
+    if n < 2 { return n }
+    return fib(n - 1) + fib(n - 2)
+}
+
+print "fact(10) = " + fact(10)
+
+let i = 0
+let line = "fib:"
+while i < 10 {
+    line = line + " " + fib(i)
+    i = i + 1
+}
+print line
+
+# --- Recursion that builds closures: apply f n times ---
+fn repeat(f, n) {
+    if n == 0 { return fn(x) { return x } }
+    return compose(f, repeat(f, n - 1))
+}
+
+print "double x8 of 1 = " + repeat(double, 8)(1)
+
+# --- Recursion driving a closure: Towers of Hanoi with a move callback ---
+fn hanoi(n, from, to, via, on_move) {
+    if n == 0 { return }
+    hanoi(n - 1, from, via, to, on_move)
+    on_move(from, to)
+    hanoi(n - 1, via, to, from, on_move)
+}
+
+hanoi(2, "A", "C", "B", fn(from, to) { print "move " + from + " -> " + to })
+
+let moves = 0
+hanoi(10, "A", "C", "B", fn(from, to) { moves = moves + 1 })
+print "hanoi(10) takes " + moves + " moves"

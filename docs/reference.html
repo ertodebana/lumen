@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick Reference | Lumen docs</title>
+<meta name="description" content="The whole language on one page.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1a2b'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23f0a020'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="sidebar">
+  <a class="brand" href="index.html">lumen <span>docs</span></a>
+  <nav aria-label="Chapters">
+    <a href="index.html">Overview</a>
+    <a href="start.html"><span>1</span>Getting Started</a>
+    <a href="values.html"><span>2</span>Values and Types</a>
+    <a href="scope.html"><span>3</span>Variables and Scope</a>
+    <a href="operators.html"><span>4</span>Operators</a>
+    <a href="flow.html"><span>5</span>Control Flow</a>
+    <a href="functions.html"><span>6</span>Functions</a>
+    <a href="closures.html"><span>7</span>Closures</a>
+    <a href="builtins.html"><span>8</span>Built-in Functions</a>
+    <a href="errors.html"><span>9</span>Errors</a>
+    <a href="layout.html"><span>10</span>Lines and Layout</a>
+    <a href="recipes.html"><span>11</span>Recipes</a>
+    <a href="embedding.html"><span>12</span>Embedding in Rust</a>
+    <a href="grammar.html"><span>A</span>Grammar</a>
+    <a href="reference.html" aria-current="page"><span>B</span>Quick Reference</a>
+    <a href="limits.html"><span>C</span>Limits and Known Gaps</a>
+  </nav>
+  <div class="elsewhere">
+    <a href="https://lumen-lang.vercel.app">Website</a>
+    <a href="https://github.com/ertodebana/lumen">GitHub</a>
+    <a href="Lumen-Handbook.pdf">Handbook (PDF)</a>
+  </div>
+</div>
+<main id="main">
+<header class="chapter" id="reference"><p class="kicker">Appendix B</p><h1>Quick Reference</h1><div class="rule"></div><p class="lead">The whole language on one page.</p></header>
+
+<div class="cards">
+  <div class="card wide kw-list">
+    <h3>Keywords</h3>
+    <code>let</code><code>fn</code><code>return</code><code>if</code><code>else</code><code>while</code><code>print</code><code>true</code><code>false</code><code>nil</code><code>and</code><code>or</code><code>not</code>
+  </div>
+  <div class="card">
+    <h3>Statements</h3>
+<pre>let x = 1
+x = x + 1
+print x
+if x > 1 { } else if x == 1 { } else { }
+while x > 0 { x = x - 1 }
+fn name(a, b) { return a + b }
+return
+{ let scoped = 1 }</pre>
+  </div>
+  <div class="card">
+    <h3>Expressions</h3>
+<pre>42   3.14   "text"   true   false   nil
+a + b   a - b   a * b   a / b   a % b
+a == b   a != b
+a &lt; b   a &lt;= b   a &gt; b   a &gt;= b
+a and b   a or b   not a   -a
+f(x, y)
+fn(x) { return x }
+( a + b ) * c</pre>
+  </div>
+  <div class="card">
+    <h3>Rules to remember</h3>
+    <ul>
+      <li>Only <code>false</code> and <code>nil</code> are falsy.</li>
+      <li><code>+</code> joins when either side is a string.</li>
+      <li>Different types are never <code>==</code>.</li>
+      <li><code>let</code> declares; <code>=</code> needs an existing name.</li>
+      <li>Braces are required; conditions take no parentheses.</li>
+      <li>One statement per line, or separate with <code>;</code>.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Built-ins and escapes</h3>
+    <p><code>len(s)</code> characters in a string</p>
+    <p><code>clock()</code> seconds since 1970</p>
+    <p style="margin-top:2.4mm"><code>\n</code> new line &nbsp; <code>\t</code> tab</p>
+    <p><code>\"</code> quote &nbsp; <code>\\</code> backslash</p>
+    <p><code>#</code> comment to end of line</p>
+  </div>
+  <div class="card wide">
+    <h3>Command line</h3>
+<pre>lumen                 start the interactive prompt
+lumen file.lm         run a script
+lumen -c CODE         run a program passed as a string
+lumen -               run a program read from standard input (also when input is piped)
+lumen -V, --version   print the version
+lumen -h, --help      print usage
+
+exit codes            0 success    1 Lumen error or unreadable file    2 bad usage</pre>
+  </div>
+</div>
+
+
+
+<nav class="pager" aria-label="Pages"><a class="prev" href="grammar.html"><small>Previous</small>Grammar</a><a class="next" href="limits.html"><small>Next</small>Limits and Known Gaps</a></nav>
+<footer>Lumen 0.2.0. Every example on this site was run by the <code>lumen</code> executable when the page was built.</footer>
+</main>
+</body>
+</html>

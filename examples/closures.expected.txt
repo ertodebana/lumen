@@ -1,0 +1,11 @@
+counter a: 3
+counter b: 1
+add5(10) = 15
+double(add5(1)) = 12
+fact(10) = 3628800
+fib: 0 1 1 2 3 5 8 13 21 34
+double x8 of 1 = 256
+move A -> B
+move A -> C
+move B -> C
+hanoi(10) takes 1023 moves

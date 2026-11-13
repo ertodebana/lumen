@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grammar | Lumen docs</title>
+<meta name="description" content="The complete syntax, in EBNF. Braces mean &quot;zero or more&quot;, square brackets mean &quot;optional&quot;, and a bar separates alternatives.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1a2b'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23f0a020'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="sidebar">
+  <a class="brand" href="index.html">lumen <span>docs</span></a>
+  <nav aria-label="Chapters">
+    <a href="index.html">Overview</a>
+    <a href="start.html"><span>1</span>Getting Started</a>
+    <a href="values.html"><span>2</span>Values and Types</a>
+    <a href="scope.html"><span>3</span>Variables and Scope</a>
+    <a href="operators.html"><span>4</span>Operators</a>
+    <a href="flow.html"><span>5</span>Control Flow</a>
+    <a href="functions.html"><span>6</span>Functions</a>
+    <a href="closures.html"><span>7</span>Closures</a>
+    <a href="builtins.html"><span>8</span>Built-in Functions</a>
+    <a href="errors.html"><span>9</span>Errors</a>
+    <a href="layout.html"><span>10</span>Lines and Layout</a>
+    <a href="recipes.html"><span>11</span>Recipes</a>
+    <a href="embedding.html"><span>12</span>Embedding in Rust</a>
+    <a href="grammar.html" aria-current="page"><span>A</span>Grammar</a>
+    <a href="reference.html"><span>B</span>Quick Reference</a>
+    <a href="limits.html"><span>C</span>Limits and Known Gaps</a>
+  </nav>
+  <div class="elsewhere">
+    <a href="https://lumen-lang.vercel.app">Website</a>
+    <a href="https://github.com/ertodebana/lumen">GitHub</a>
+    <a href="Lumen-Handbook.pdf">Handbook (PDF)</a>
+  </div>
+</div>
+<main id="main">
+<header class="chapter" id="grammar"><p class="kicker">Appendix A</p><h1>Grammar</h1><div class="rule"></div><p class="lead">The complete syntax, in EBNF. Braces mean
+"zero or more", square brackets mean "optional", and a bar separates alternatives.</p></header>
+
+<h2>Statements</h2>
+<figure class="code"><pre class="src">program     = { statement } ;
+
+statement   = letStmt | fnDecl | printStmt | ifStmt
+            | whileStmt | returnStmt | block | exprStmt ;
+
+letStmt     = "let" IDENT [ "=" expression ] ;
+fnDecl      = "fn" IDENT "(" [ params ] ")" block ;
+printStmt   = "print" expression ;
+ifStmt      = "if" expression block [ "else" ( ifStmt | block ) ] ;
+whileStmt   = "while" expression block ;
+returnStmt  = "return" [ expression ] ;
+block       = "{" { statement } "}" ;
+exprStmt    = expression ;
+
+params      = IDENT { "," IDENT } ;</pre></figure>
+
+<h2>Expressions</h2>
+<figure class="code"><pre class="src">expression  = assignment ;
+assignment  = IDENT "=" assignment | logicOr ;
+logicOr     = logicAnd   { "or"  logicAnd } ;
+logicAnd    = equality   { "and" equality } ;
+equality    = comparison { ( "==" | "!=" ) comparison } ;
+comparison  = term       { ( "&lt;" | "&lt;=" | "&gt;" | "&gt;=" ) term } ;
+term        = factor     { ( "+" | "-" ) factor } ;
+factor      = unary      { ( "*" | "/" | "%" ) unary } ;
+unary       = "-" unary | "not" equality | call ;
+call        = primary { "(" [ arguments ] ")" } ;
+arguments   = expression { "," expression } ;
+
+primary     = NUMBER | STRING | "true" | "false" | "nil" | IDENT
+            | "(" expression ")"
+            | "fn" "(" [ params ] ")" block ;</pre></figure>
+
+<h2>Tokens</h2>
+<figure class="code"><pre class="src">NUMBER      = DIGIT { DIGIT } [ "." DIGIT { DIGIT } ] ;
+STRING      = '"' { any character except '"' and '\' | ESCAPE } '"' ;
+ESCAPE      = "\n" | "\t" | '\"' | "\\" ;
+IDENT       = ( LETTER | "_" ) { LETTER | DIGIT | "_" } ;   (not a keyword)
+COMMENT     = "#" { any character except a line break } ;</pre></figure>
+<p>Letters are <code>a</code> to <code>z</code> and <code>A</code> to <code>Z</code>.
+Statements are separated by line breaks or <code>;</code>, under the rules of chapter 10,
+which the grammar above does not express.</p>
+
+
+
+<nav class="pager" aria-label="Pages"><a class="prev" href="embedding.html"><small>Previous</small>Embedding in Rust</a><a class="next" href="reference.html"><small>Next</small>Quick Reference</a></nav>
+<footer>Lumen 0.2.0. Every example on this site was run by the <code>lumen</code> executable when the page was built.</footer>
+</main>
+</body>
+</html>

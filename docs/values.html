@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Values and Types | Lumen docs</title>
+<meta name="description" content="Lumen has five kinds of value. Variables do not have types; the values in them do.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1a2b'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23f0a020'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="sidebar">
+  <a class="brand" href="index.html">lumen <span>docs</span></a>
+  <nav aria-label="Chapters">
+    <a href="index.html">Overview</a>
+    <a href="start.html"><span>1</span>Getting Started</a>
+    <a href="values.html" aria-current="page"><span>2</span>Values and Types</a>
+    <a href="scope.html"><span>3</span>Variables and Scope</a>
+    <a href="operators.html"><span>4</span>Operators</a>
+    <a href="flow.html"><span>5</span>Control Flow</a>
+    <a href="functions.html"><span>6</span>Functions</a>
+    <a href="closures.html"><span>7</span>Closures</a>
+    <a href="builtins.html"><span>8</span>Built-in Functions</a>
+    <a href="errors.html"><span>9</span>Errors</a>
+    <a href="layout.html"><span>10</span>Lines and Layout</a>
+    <a href="recipes.html"><span>11</span>Recipes</a>
+    <a href="embedding.html"><span>12</span>Embedding in Rust</a>
+    <a href="grammar.html"><span>A</span>Grammar</a>
+    <a href="reference.html"><span>B</span>Quick Reference</a>
+    <a href="limits.html"><span>C</span>Limits and Known Gaps</a>
+  </nav>
+  <div class="elsewhere">
+    <a href="https://lumen-lang.vercel.app">Website</a>
+    <a href="https://github.com/ertodebana/lumen">GitHub</a>
+    <a href="Lumen-Handbook.pdf">Handbook (PDF)</a>
+  </div>
+</div>
+<main id="main">
+<header class="chapter" id="values"><p class="kicker">Chapter 2</p><h1>Values and Types</h1><div class="rule"></div><p class="lead">Lumen has five kinds of value. Variables
+do not have types; the values in them do.</p></header>
+
+<table>
+<tr><th>Type</th><th>Written as</th><th>Notes</th></tr>
+<tr><td>number</td><td><code>42</code> &nbsp;<code>3.14</code></td><td class="wrap">One numeric type: a 64-bit float.</td></tr>
+<tr><td>string</td><td><code>"hello"</code></td><td class="wrap">Text in double quotes.</td></tr>
+<tr><td>boolean</td><td><code>true</code> &nbsp;<code>false</code></td><td class="wrap">The result of comparisons.</td></tr>
+<tr><td>nil</td><td><code>nil</code></td><td class="wrap">The absence of a value.</td></tr>
+<tr><td>function</td><td><code>fn(x) { return x }</code></td><td class="wrap">A value like any other. See chapters 6 and 7.</td></tr>
+</table>
+
+<h2>Numbers</h2>
+<p>There is no separate integer type. Whole numbers are exact up to 9,007,199,254,740,992
+(2<sup>53</sup>), and a number with no fractional part prints without a decimal point.</p>
+<figure class="code"><pre class="src"><span class="kw">print</span> <span class="number">42</span>
+<span class="kw">print</span> <span class="number">3.14</span>
+<span class="kw">print</span> <span class="number">7</span> / <span class="number">2</span>
+<span class="kw">print</span> <span class="number">6</span> / <span class="number">2</span>          <span class="comment"># a whole result prints as a whole number</span>
+<span class="kw">print</span> <span class="number">0.1</span> + <span class="number">0.2</span>      <span class="comment"># floats are floats</span>
+<span class="kw">print</span> <span class="number">10</span> % <span class="number">3</span>
+<span class="kw">print</span> -<span class="number">7</span> % <span class="number">3</span>         <span class="comment"># the result takes the sign of the right-hand side</span></pre><pre class="out">42
+3.14
+3.5
+3
+0.30000000000000004
+1
+2</pre></figure>
+<p>A number literal is digits, optionally followed by a point and more digits. There is no
+exponent form, and <code>.5</code> and <code>5.</code> are not numbers; write <code>0.5</code>
+and <code>5</code>.</p>
+
+<h2>Strings</h2>
+<p>Strings are written in double quotes and may contain four escape sequences.</p>
+<table>
+<tr><th>Escape</th><th>Produces</th></tr>
+<tr><td><code>\n</code></td><td>a new line</td></tr>
+<tr><td><code>\t</code></td><td>a tab</td></tr>
+<tr><td><code>\"</code></td><td>a double quote</td></tr>
+<tr><td><code>\\</code></td><td>a backslash</td></tr>
+</table>
+<figure class="code"><pre class="src"><span class="kw">print</span> <span class="string">"Hello"</span> + <span class="string">", "</span> + <span class="string">"world"</span>
+<span class="kw">print</span> <span class="string">"She said \"hi\""</span>
+<span class="kw">print</span> <span class="string">"one\ntwo"</span>
+<span class="kw">print</span> <span class="string">"total: "</span> + <span class="number">42</span>
+<span class="kw">print</span> <span class="call">len</span>(<span class="string">"lumen"</span>)</pre><pre class="out">Hello, world
+She said "hi"
+one
+two
+total: 42
+5</pre></figure>
+<p>The <code>+</code> operator joins strings. If only one side is a string, the other side is
+converted to text first, which is how <code>"total: " + 42</code> works. That is also the
+way to turn any value into a string: add it to <code>""</code>.</p>
+<aside><b>Note</b>Strings cannot be indexed or sliced, and there is no way to take one apart
+character by character. <code>len</code> and <code>+</code> are the string operations.</aside>
+
+<h2>Booleans and nil</h2>
+<p><code>true</code> and <code>false</code> come from comparisons and the logical operators.
+<code>nil</code> is what you get from a variable declared without a value, or from a function
+that does not return anything.</p>
+
+<h2>Truthiness</h2>
+<p>Any value can be used as a condition. The rule is short: <strong>only
+<code>false</code> and <code>nil</code> are falsy</strong>. Everything else counts as true,
+including zero and the empty string.</p>
+<figure class="code"><pre class="src"><span class="kw">if</span> <span class="number">0</span> { <span class="kw">print</span> <span class="string">"0 is truthy"</span> }
+<span class="kw">if</span> <span class="string">""</span> { <span class="kw">print</span> <span class="string">"the empty string is truthy"</span> }
+<span class="kw">if</span> <span class="const">nil</span> { <span class="kw">print</span> <span class="string">"this line never prints"</span> }
+<span class="kw">if</span> <span class="kw">not</span> <span class="const">nil</span> { <span class="kw">print</span> <span class="string">"nil is falsy"</span> }</pre><pre class="out">0 is truthy
+the empty string is truthy
+nil is falsy</pre></figure>
+
+<h2>Equality</h2>
+<p><code>==</code> and <code>!=</code> work on any two values and never raise an error.
+Values of different types are never equal, and nothing is converted to make them match.</p>
+<figure class="code"><pre class="src"><span class="kw">print</span> <span class="number">1</span> == <span class="number">1</span>
+<span class="kw">print</span> <span class="string">"a"</span> == <span class="string">"a"</span>
+<span class="kw">print</span> <span class="string">"1"</span> == <span class="number">1</span>       <span class="comment"># a string is never equal to a number</span>
+<span class="kw">print</span> <span class="const">nil</span> == <span class="const">false</span>   <span class="comment"># nil is only equal to nil</span>
+<span class="kw">print</span> <span class="number">0</span> == <span class="const">false</span></pre><pre class="out">true
+true
+false
+false
+false</pre></figure>
+<p>Two function values are equal only when they are the very same function.</p>
+
+
+
+<nav class="pager" aria-label="Pages"><a class="prev" href="start.html"><small>Previous</small>Getting Started</a><a class="next" href="scope.html"><small>Next</small>Variables and Scope</a></nav>
+<footer>Lumen 0.2.0. Every example on this site was run by the <code>lumen</code> executable when the page was built.</footer>
+</main>
+</body>
+</html>

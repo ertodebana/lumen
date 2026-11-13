@@ -1,0 +1,12 @@
+[package]
+name = "lumen"
+version = "0.2.0"
+edition = "2021"
+description = "Lumen: a small dynamically typed programming language"
+
+[dependencies]
+rustyline = "19.0.0"
+
+[profile.release]
+opt-level = 3
+lto = true
