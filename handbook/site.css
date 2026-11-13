@@ -77,9 +77,9 @@ figure { margin: 0; }
 figure.code { margin: 1.25rem 0 1.75rem; border-radius: 0.7rem; overflow: hidden; }
 pre { margin: 0; font: 0.86rem/1.65 var(--mono); tab-size: 4; overflow-x: auto; }
 pre.src { background: var(--panel); color: #e6ebf3; padding: 1.05rem 1.3rem; }
-pre.out { background: #fff; color: #1d2a3d; padding: 0.75rem 1.3rem 0.9rem; border: 1px solid var(--line); border-top: 0; border-left: 4px solid var(--amber); }
+pre.out { background: #fff; color: #1d2a3d; padding: 0.75rem 1.3rem 0.9rem; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 0.7rem 0.7rem; }
 pre.out::before { content: "Output"; display: block; margin-bottom: 0.3rem; font: 600 0.72rem var(--display); color: var(--amber-ink); }
-pre.out.err { border-left-color: var(--red); color: #8c1d18; background: #fdf3f1; }
+pre.out.err { border-color: #efc9c4; color: #8c1d18; background: #fdf3f1; }
 pre.out.err::before { content: "Error"; color: var(--red); }
 .comment { color: #93a1b8; font-style: italic; }
 .string { color: #a9dba0; }
@@ -99,9 +99,9 @@ td:first-child { white-space: nowrap; }
 td.wrap { white-space: normal; min-width: 11rem; }
 
 /* callouts */
-main aside { margin: 1.5rem 0 1.75rem; padding: 0.95rem 1.25rem; background: #fdf6e6; border-left: 4px solid var(--amber); border-radius: 0 0.5rem 0.5rem 0; font-size: 0.97rem; line-height: 1.55; }
+main aside { margin: 1.5rem 0 1.75rem; padding: 0.95rem 1.25rem; background: #fdf6e6; border: 1px solid #f0dcae; border-radius: 0.5rem; font-size: 0.97rem; line-height: 1.55; }
 main aside b:first-child { display: block; font-size: 0.82rem; color: var(--amber-ink); margin-bottom: 0.15rem; }
-main aside.warn { background: #fdf3f1; border-left-color: var(--red); }
+main aside.warn { background: #fdf3f1; border-color: #efc9c4; }
 main aside.warn b:first-child { color: var(--red); }
 
 /* diagrams */
